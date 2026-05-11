@@ -14,7 +14,7 @@ This project takes MoMo SMS data in XML format, processes and cleans it, stores 
 
 ## Architecture Diagram
 
-[View here](https://github.com/nshimyumurwa/momo-data-analysis/blob/main/architecture-diagram.drawio.png) ← replace with your link
+[View here](https://github.com/nshimyumurwa/momo-data-analysis/blob/main/architecture-diagram.drawio.png)
 
 ## Project Structure
 
@@ -80,4 +80,4 @@ Then open `http://localhost:8000` in your browser.
 
 ## Scrum Board
 
-[View here](https://github.com/users/nshimyumurwa/projects/1/views/1) ← replace with your link
+[View here](https://github.com/users/nshimyumurwa/projects/1/views/1)
