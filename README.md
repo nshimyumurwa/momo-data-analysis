@@ -80,4 +80,4 @@ Then open `http://localhost:8000` in your browser.
 
 ## Scrum Board
 
-[View here](#) ← replace with your link
+[View here](https://github.com/users/nshimyumurwa/projects/1/views/1) ← replace with your link
