@@ -14,7 +14,7 @@ This project takes MoMo SMS data in XML format, processes and cleans it, stores 
 
 ## Architecture Diagram
 
-[View here](#) ← replace with your link
+[View here](https://github.com/nshimyumurwa/momo-data-analysis/blob/main/architecture-diagram.drawio.png) ← replace with your link
 
 ## Project Structure
 
