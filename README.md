@@ -78,6 +78,11 @@ bash scripts/serve_frontend.sh
 
 Then open `http://localhost:8000` in your browser.
 
+
+## Additional Notes
+
+This project was collaboratively developed using GitHub workflow practices including commits, branching, testing, and task management through a Scrum board.
+
 ## Scrum Board
 
 [View here](https://github.com/users/nshimyumurwa/projects/1/views/1)
