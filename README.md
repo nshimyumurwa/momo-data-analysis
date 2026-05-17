@@ -132,15 +132,3 @@ Then open http://localhost:8000 in your browser.
 ## Scrum Board
 
 https://github.com/users/nshimyumurwa/projects/1/views/1
-
----
-
-## AI Usage Log
-
-| Date | Tool | What it was used for | Section | Allowed |
-|---|---|---|---|---|
-| 2025-05-11 | Claude | Checking grammar in the README | Documentation | Yes |
-| 2025-05-12 | Claude | Verifying SQL constraint syntax | Code review | Yes |
-| 2025-05-13 | Claude | Looking up MySQL 8.0 CHECK constraint documentation | Research | Yes |
-
-All database design choices, entity relationships, and the SQL schema logic were done by the team. No AI tool was used to design the database structure or write the SQL.
