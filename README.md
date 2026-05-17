@@ -20,6 +20,7 @@ This project takes MoMo SMS data in XML format, processes and cleans it, stores 
 ## ERD Diagram
 
 - ERD Diagram (PDF): [docs/erd_diagram.pdf](docs/erd_diagram.pdf)
+- ERD Design Explanation: [docs/erd_design_explanation.md](docs/erd_design_explanation.md)
 
 ## Project Structure
 
