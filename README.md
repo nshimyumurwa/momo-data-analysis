@@ -1,6 +1,6 @@
 # MoMo Data Analysis
 
-## Team 2C1 - Team 8
+## Team 2
 
 | Name | Role |
 |---|---|
