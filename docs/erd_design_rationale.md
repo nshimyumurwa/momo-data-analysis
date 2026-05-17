@@ -1,0 +1,9 @@
+# ERD Design Rationale
+
+This ERD is designed to represent MoMo SMS transaction processing in a way that is accurate, normalized, and easy to extend. The `TRANSACTIONS` table is the central entity because each SMS event ultimately maps to a transaction record with amount, status, and timestamp details. Transaction type information is separated into `TRANSACTION_CATEGORIES` so category values are managed in one place instead of being repeated in every transaction row. This reduces data duplication and improves consistency.
+
+`USERS` is modeled separately to store participant identity information once, since the same person can appear in many transactions over time. Because one transaction can involve multiple users (for example sender and receiver) and one user can participate in multiple transactions, this relationship is many-to-many. It is resolved using the `TRANSACTION_PARTICIPANTS` junction table, where `participant_role` captures the role played in each transaction.
+
+`SYSTEM_LOGS` is separated from business transaction records to support monitoring, troubleshooting, and auditability without overloading transaction data. Logs can reference both a transaction and an acting user, which supports traceability of system processing events.
+
+Primary keys provide uniqueness for each entity, and foreign keys enforce referential integrity across relationships. Cardinalities are explicitly defined as category-to-transactions (1:M), transactions-to-users (M:N via junction table), transactions-to-logs (1:M), and users-to-logs (1:M for actor events). This design supports current requirements while remaining scalable for additional transaction types and reporting needs.
