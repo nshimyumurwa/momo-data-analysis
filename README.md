@@ -7,6 +7,7 @@
 | Nshimyumurwa Mary Therese |
 | Aimable BANCUNGUYE |
 | Mizero Eloi |
+| Davy Dushimiyimana |
 
 ## About the Project
 
@@ -16,11 +17,9 @@ This project takes MoMo SMS data in XML format, processes and cleans it, stores 
 
 [View here](https://github.com/nshimyumurwa/momo-data-analysis/blob/main/architecture-diagram.drawio.png)
 
-## Week 2: Database Design Deliverables
+## ERD Diagram
 
 - ERD Diagram (PDF): [docs/erd_diagram.pdf](docs/erd_diagram.pdf)
-- ERD Design Rationale: [docs/erd_design_rationale.md](docs/erd_design_rationale.md)
-- ERD Keys and Cardinality Notes: [docs/erd_cardinality_and_keys.md](docs/erd_cardinality_and_keys.md)
 
 ## Project Structure
 
