@@ -12,12 +12,21 @@
 
 ---
 
+This project takes MoMo SMS data in XML format, processes and cleans it, stores it in a MySQL database, and displays the results on a simple web dashboard. The goal is to make it easy to understand transaction patterns over time.
+
+The database schema consists of 6 tables: `TRANSACTION_CATEGORIES`, `USERS`, `TRANSACTIONS`, `TAGS`, `TRANSACTION_TAGS`, and `SYSTEM_LOGS`.
 ## What this project does
 
 This project takes MoMo SMS messages that are stored in XML format, reads through them, pulls out the transaction details, saves everything into a database, and shows the results on a simple web dashboard. The idea is to make it easy to see what kinds of transactions are happening and how much money is moving around.
 
 ---
 
+## ERD Diagram
+
+- ERD Diagram (PDF): [docs/erd_diagram.pdf](docs/erd_diagram.pdf)
+- ERD Design Explanation: [docs/erd_design_explanation.md](docs/erd_design_explanation.md)
+
+## Project Structure
 ## Folder structure
 
 ```
