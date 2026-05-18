@@ -94,6 +94,7 @@ mysql -u root -p < database/database_setup.sql
 git clone https://github.com/nshimyumurwa/momo-data-analysis.git
 cd momo-data-analysis
 pip install -r requirements.txt
+mysql -u root -p < database/database_setup.sql # To Initialize the Database
 bash scripts/run_etl.sh
 bash scripts/serve_frontend.sh
 ```
