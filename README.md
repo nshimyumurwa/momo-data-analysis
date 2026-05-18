@@ -1,23 +1,25 @@
 # MoMo Data Analysis
 
-## Team 8
+## Team 2
 
-| Name |
-|------|
-| Nshimyumurwa Mary Therese |
-| Aimable BANCUNGUYE |
-| Mizero Eloi |
-| Davy Dushimiyimana |
+| Name | Role |
+|---|---|
+| Therese Mary Nshimyumurwa | Team Lead |
+| Aimable Bancunguye | Backend and Database |
+| Eloi Mizero | ETL and Testing |
+| Davy Dushimiyimana | Frontend and Integration |
+| Clive Tanaka Mushipe | Documentation and QA |
 
-## About the Project
+---
 
 This project takes MoMo SMS data in XML format, processes and cleans it, stores it in a MySQL database, and displays the results on a simple web dashboard. The goal is to make it easy to understand transaction patterns over time.
 
 The database schema consists of 6 tables: `TRANSACTION_CATEGORIES`, `USERS`, `TRANSACTIONS`, `TAGS`, `TRANSACTION_TAGS`, and `SYSTEM_LOGS`.
+## What this project does
 
-## Architecture Diagram
+This project takes MoMo SMS messages that are stored in XML format, reads through them, pulls out the transaction details, saves everything into a database, and shows the results on a simple web dashboard. The idea is to make it easy to see what kinds of transactions are happening and how much money is moving around.
 
-[View here](https://github.com/nshimyumurwa/momo-data-analysis/blob/main/architecture-diagram.drawio.png)
+---
 
 ## ERD Diagram
 
@@ -25,27 +27,24 @@ The database schema consists of 6 tables: `TRANSACTION_CATEGORIES`, `USERS`, `TR
 - ERD Design Explanation: [docs/erd_design_explanation.md](docs/erd_design_explanation.md)
 
 ## Project Structure
+## Folder structure
 
 ```
 .
 ├── README.md
-├── .env.example
-├── requirements.txt
-├── index.html
-├── web/
-│   ├── styles.css
-│   ├── chart_handler.js
-│   └── assets/
+├── docs/
+│   └── erd_diagram.png
+├── database/
+│   └── database_setup.sql
+├── examples/
+│   └── json_schemas.json
 ├── data/
 │   ├── raw/
 │   │   └── momo.xml
 │   ├── processed/
 │   │   └── dashboard.json
 │   └── logs/
-│       ├── etl.log
-│       └── dead_letter/
 ├── etl/
-│   ├── config.py
 │   ├── parse_xml.py
 │   ├── clean_normalize.py
 │   ├── categorize.py
@@ -53,43 +52,65 @@ The database schema consists of 6 tables: `TRANSACTION_CATEGORIES`, `USERS`, `TR
 │   └── run.py
 ├── scripts/
 │   ├── run_etl.sh
-│   ├── export_json.sh
 │   └── serve_frontend.sh
 └── tests/
     ├── test_parse_xml.py
-    ├── test_clean_normalize.py
     └── test_categorize.py
 ```
 
-## How to Run
+---
 
-Clone the repo and install dependencies:
+## Database design
+
+We used MySQL to build the database. There are six tables in total.
+
+| Table | What it stores |
+|---|---|
+| transaction_categories | The different types of MoMo transactions, for example sending money or paying a merchant |
+| users | Everyone who uses MoMo including individuals, merchants, and agents |
+| transactions | Every single transaction that was read from an SMS message |
+| tags | Short labels that can be attached to transactions like flagged or reconciled |
+| transaction_tags | Connects transactions to tags since one transaction can have more than one tag |
+| system_logs | A record of everything that happens when the system is processing data |
+
+### Why we designed it this way
+
+We kept transaction categories in a separate table so we do not repeat the same category name in thousands of rows. If a category name ever changes, we only update it in one place.
+
+The transactions table links to the users table twice, once for the sender and once for the receiver. Both can be empty because sometimes the other party is not a registered MoMo user, for example when receiving money from abroad.
+
+The transaction_tags table exists because one transaction can have many tags and one tag can be used on many transactions. This is called a many-to-many relationship and the transaction_tags table is how we handle it properly.
+
+We used DECIMAL for all money columns instead of FLOAT because FLOAT causes small rounding errors which is a big problem when dealing with financial data.
+
+### How to run the database script
+
+```bash
+mysql -u root -p < database/database_setup.sql
+```
+
+---
+
+## How to run the project
 
 ```bash
 git clone https://github.com/nshimyumurwa/momo-data-analysis.git
 cd momo-data-analysis
 pip install -r requirements.txt
-```
-
-Run the ETL pipeline:
-
-```bash
 bash scripts/run_etl.sh
-```
-
-Start the frontend:
-
-```bash
 bash scripts/serve_frontend.sh
 ```
 
-Then open `http://localhost:8000` in your browser.
+Then open http://localhost:8000 in your browser.
 
+---
 
-## Additional Notes
+## Scrum board
 
-This project was collaboratively developed using GitHub workflow practices including commits, branching, testing, and task management through a Scrum board.
+https://github.com/users/nshimyumurwa/projects/1/views/1
 
-## Scrum Board
+---
 
-[View here](https://github.com/users/nshimyumurwa/projects/1/views/1)
+## AI usage
+
+We used Claude to check the grammar in our documentation and to verify some SQL syntax.
