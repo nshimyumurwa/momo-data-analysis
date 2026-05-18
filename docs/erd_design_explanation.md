@@ -1,10 +1,13 @@
 ## ERD Design Explanation
-The Entity Relationship Diagram (ERD) was designed based on the structure of Mobile Money (MoMo) transaction data. The goal of the design is to efficiently store, manage, and track financial transactions while maintaining data integrity and scalability.
 
-The core entity in the system is TRANSACTIONS, which stores all transaction records including transaction reference, amount, status, and initiation date. Each transaction belongs to a specific category through the category_id foreign key. The TRANSACTION_CATEGORIES entity was created to classify transactions such as deposits, withdrawals, transfers, or bill payments. This creates a one-to-many (1:M) relationship because one category can contain many transactions.
+The ERD is based on MoMo SMS transaction data and is implemented in MySQL.
 
-The USERS entity stores customer information such as full name, phone number, user type, and account creation date. Since a single transaction may involve multiple users (for example sender and receiver), and one user can participate in many transactions, a many-to-many (M:N) relationship exists between USERS and TRANSACTIONS. This relationship is resolved using the TRANSACTION_PARTICIPANTS junction table, which stores participant roles such as sender or receiver.
+TRANSACTION_CATEGORIES holds the different types of transactions like deposits, withdrawals, and transfers. One category can have many transactions (1:M with TRANSACTIONS).
 
-The SYSTEM_LOGS entity was included to support auditing and monitoring of system activities. Each log entry tracks actions performed on transactions, including event type, severity level, actor user, and timestamp. This creates a one-to-many relationship where one transaction can generate multiple logs.
+USERS stores anyone involved in a transaction — sender or receiver. A single user can appear in many transactions, and each transaction links to two users through `sender_id` and `receiver_id` (both FK to USERS).
 
-Primary keys (PK) uniquely identify records, while foreign keys (FK) enforce referential integrity between related entities. Appropriate data types such as INT, BIGINT, STRING, DECIMAL, BOOLEAN, and DATETIME were selected to ensure efficient storage and accurate representation of data.
+TRANSACTIONS is the main table. It holds the parsed SMS data including amount, fee, balance, status, and the original SMS body. It references TRANSACTION_CATEGORIES, and both user parties.
+
+TAGS and TRANSACTION_TAGS allow labelling transactions. Since one transaction can have many tags and one tag can apply to many transactions, TRANSACTION_TAGS is a junction table resolving that M:N relationship.
+
+SYSTEM_LOGS tracks ETL events and errors. Each log can optionally link to a transaction. One transaction can produce many log entries (1:M).

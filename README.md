@@ -11,7 +11,9 @@
 
 ## About the Project
 
-This project takes MoMo SMS data in XML format, processes and cleans it, stores it in a SQLite database, and displays the results on a simple web dashboard. The goal is to make it easy to understand transaction patterns over time.
+This project takes MoMo SMS data in XML format, processes and cleans it, stores it in a MySQL database, and displays the results on a simple web dashboard. The goal is to make it easy to understand transaction patterns over time.
+
+The database schema consists of 6 tables: `TRANSACTION_CATEGORIES`, `USERS`, `TRANSACTIONS`, `TAGS`, `TRANSACTION_TAGS`, and `SYSTEM_LOGS`.
 
 ## Architecture Diagram
 
@@ -39,7 +41,6 @@ This project takes MoMo SMS data in XML format, processes and cleans it, stores 
 │   │   └── momo.xml
 │   ├── processed/
 │   │   └── dashboard.json
-│   ├── db.sqlite3
 │   └── logs/
 │       ├── etl.log
 │       └── dead_letter/
