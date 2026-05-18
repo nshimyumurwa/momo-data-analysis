@@ -1,7 +1,7 @@
 {
   "_meta": {
     "project": "MoMo SMS Data Processing System",
-    "team": "Team 8",
+    "team": "Team 2",
     "members": ["Therese Mary Nshimyumurwa", "Aimable Bancunguye", "Eloi Mizero", "Davy Dushimiyimana", "Clive Tanaka Mushipe"],
     "description": "JSON representations of all main database entities, showing how relational data is serialized for API responses",
     "version": "1.0.0"
@@ -29,7 +29,7 @@
       "example": {
         "user_id": 1,
         "phone_number": "+250788100001",
-        "full_name": "Nshimyumurwa Mary Therese",
+        "full_name": "Therese Mary Nshimyumurwa",
         "account_type": "INDIVIDUAL",
         "is_verified": true,
         "created_at": "2025-01-15T08:00:00Z",
@@ -84,7 +84,7 @@
     },
 
     "transaction_full": {
-      "_description": "Complete transaction object with all related data: user info, category, tags, and logs. This is what the API returns for a single transaction detail endpoint (GET /api/transactions/:id).",
+      "_description": "Complete transaction object with all related data. This is what the API returns when someone requests the full details of one transaction.",
       "_sql_mapping": {
         "transaction_id": "transactions.transaction_id",
         "external_ref": "transactions.external_ref",
@@ -100,7 +100,7 @@
         "category": "JOIN transaction_categories ON transactions.category_id",
         "sender": "LEFT JOIN users AS sender ON transactions.sender_id",
         "receiver": "LEFT JOIN users AS receiver ON transactions.receiver_id",
-        "tags": "JOIN transaction_tags + tags (M:N junction)",
+        "tags": "JOIN transaction_tags and tags to resolve the many-to-many relationship",
         "logs": "LEFT JOIN system_logs ON transactions.transaction_id"
       },
       "example": {
@@ -128,7 +128,7 @@
         "receiver": {
           "user_id": 3,
           "phone_number": "+250788100003",
-          "full_name": "Mizero Eloi",
+          "full_name": "Eloi Mizero",
           "account_type": "INDIVIDUAL",
           "is_verified": true
         },
@@ -138,13 +138,13 @@
             "tag_id": 3,
             "tag_name": "high_value",
             "tagged_at": "2025-05-07T11:00:03Z",
-            "tagged_by": "etl_pipeline"
+            "tagged_by": "system"
           },
           {
             "tag_id": 5,
             "tag_name": "international",
             "tagged_at": "2025-05-07T11:00:03Z",
-            "tagged_by": "etl_pipeline"
+            "tagged_by": "system"
           }
         ],
 
@@ -172,7 +172,7 @@
               "external_ref": "TXN20250507001",
               "category_name": "International Remittance In",
               "direction": "CREDIT",
-              "receiver": "Mizero Eloi",
+              "receiver": "Eloi Mizero",
               "amount": 250000.00,
               "currency": "RWF",
               "transaction_date": "2025-05-07T11:00:00Z",
@@ -183,7 +183,7 @@
               "external_ref": "TXN20250506001",
               "category_name": "Utility Bill Payment",
               "direction": "DEBIT",
-              "sender": "Nshimyumurwa Mary Therese",
+              "sender": "Therese Mary Nshimyumurwa",
               "amount": 15000.00,
               "currency": "RWF",
               "transaction_date": "2025-05-06T07:45:00Z",
@@ -205,7 +205,7 @@
     },
 
     "dashboard_summary": {
-      "_description": "Aggregated summary object for the dashboard (derived from v_daily_summary view)",
+      "_description": "Aggregated summary object for the dashboard, based on the v_daily_summary view",
       "example": {
         "period": {
           "from": "2025-05-01",
