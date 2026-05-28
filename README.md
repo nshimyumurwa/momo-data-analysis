@@ -1,114 +1,327 @@
-# MoMo Data Analysis
+# 🌽 PostHarvestSaver — Rwanda Crop Spoilage Risk Analyzer
 
-## Team 2
+> **Protecting Rwandan harvests through real-time weather intelligence**
 
-| Name | Role |
-|---|---|
-| Therese Mary Nshimyumurwa | Team Lead |
-| Aimable Bancunguye | Backend and Database |
-| Eloi Mizero | ETL and Testing |
-| Davy Dushimiyimana | Frontend and Integration |
-| Clive Tanaka Mushipe | Documentation and QA |
+PostHarvestSaver is a web application that helps Rwandan smallholder farmers assess the spoilage risk of their stored crops based on **live weather conditions** in their district. By combining real-time weather data with crop-specific thresholds, the app delivers instant, actionable storage recommendations — reducing post-harvest losses that cost Rwanda's agricultural economy millions every year.
 
 ---
 
-## What this project does
+## 🎯 The Problem This Solves
 
-This project takes MoMo SMS messages that are stored in XML format, reads through them, pulls out the transaction details, saves everything into a database, and shows the results on a simple web dashboard. The idea is to make it easy to see what kinds of transactions are happening and how much money is moving around.
-
----
-
-## ERD Diagram
-
-- ERD Diagram (PDF): [docs/ERD Diagram.drawio.pdf](docs/ERD%20Diagram.drawio.pdf)
-- ERD Design Explanation: [docs/erd_design_explanation.md](docs/erd_design_explanation.md)
-
-## Folder structure
-
-```
-.
-├── README.md
-├── docs/
-│   ├── ERD Diagram.drawio.pdf
-│   └── erd_design_explanation.md
-├── database/
-│   └── database_setup.sql
-├── examples/
-│   └── json_schemas.json
-├── data/
-│   ├── raw/
-│   │   └── momo.xml
-│   ├── processed/
-│   │   └── dashboard.json
-│   └── logs/
-├── etl/
-│   ├── parse_xml.py
-│   ├── clean_normalize.py
-│   ├── categorize.py
-│   ├── load_db.py
-│   └── run.py
-├── scripts/
-│   ├── run_etl.sh
-│   └── serve_frontend.sh
-└── tests/
-    ├── test_parse_xml.py
-    └── test_categorize.py
-```
+Rwanda loses an estimated **30% of agricultural produce** after harvest due to poor storage decisions. Most smallholder farmers don't have access to tools that connect current weather conditions (temperature, humidity, rainfall) to crop-specific spoilage risk. PostHarvestSaver fills this critical gap, directly supporting Rwanda's **Vision 2050** food security targets and **NST2** agricultural transformation goals.
 
 ---
 
-## Database design
+## ✨ Features
 
-We used MySQL to build the database. There are six tables in total.
+- 🌾 **8 crops supported**: Maize, Beans, Tomatoes, Irish Potatoes, Bananas, Sorghum, Cassava, Sweet Potato — all in Kinyarwanda and English
+- 📍 **All 30 Rwanda districts covered** with precise GPS coordinates for accurate hyperlocal weather
+- 🌡️ **Live weather data** via OpenWeatherMap API (temperature, humidity, rainfall, wind)
+- 📊 **Dynamic risk meter** scoring spoilage risk from 0–100 with four levels: LOW / MEDIUM / HIGH / CRITICAL
+- 💡 **Crop-specific recommendations** tailored to the detected risk level
+- 🔍 **Filter history** by risk level (Low, Medium, High, Critical)
+- ↕️ **Sort history** by newest, oldest, highest risk, or lowest risk
+- 💾 **Persistent history** stored locally — analyses survive page refresh
+- ⚠️ **Comprehensive error handling** for API downtime, invalid inputs, network errors, and rate limits
+- 📱 **Fully responsive** — works on mobile, tablet, and desktop
+- 🏥 **/health endpoint** for load balancer health checks
 
-| Table | What it stores |
-|---|---|
-| transaction_categories | The different types of MoMo transactions, for example sending money or paying a merchant |
-| users | Everyone who uses MoMo including individuals, merchants, and agents |
-| transactions | Every single transaction that was read from an SMS message |
-| tags | Short labels that can be attached to transactions like flagged or reconciled |
-| transaction_tags | Connects transactions to tags since one transaction can have more than one tag |
-| system_logs | A record of everything that happens when the system is processing data |
+---
 
-### Why we designed it this way
+## 🛠️ Tech Stack
 
-We kept transaction categories in a separate table so we do not repeat the same category name in thousands of rows. If a category name ever changes, we only update it in one place.
+| Layer | Technology |
+|-------|-----------|
+| Backend | Python 3, Flask 3.1 |
+| Frontend | HTML5, CSS3, Vanilla JavaScript |
+| API | OpenWeatherMap Current Weather API |
+| Server | Gunicorn (production), Flask dev server (local) |
+| Load Balancer | Nginx |
 
-The transactions table links to the users table twice, once for the sender and once for the receiver. Both can be empty because sometimes the other party is not a registered MoMo user, for example when receiving money from abroad.
+---
 
-The transaction_tags table exists because one transaction can have many tags and one tag can be used on many transactions. This is called a many-to-many relationship and the transaction_tags table is how we handle it properly.
+## 🚀 Part One: Running Locally
 
-We used DECIMAL for all money columns instead of FLOAT because FLOAT causes small rounding errors which is a big problem when dealing with financial data.
+### Prerequisites
 
-### How to run the database script
+- Python 3.8 or higher
+- pip
+- A free OpenWeatherMap API key (instructions below)
+
+### Step 1 — Get Your Free API Key
+
+1. Go to [https://openweathermap.org/api](https://openweathermap.org/api)
+2. Click **Sign Up** and create a free account
+3. Go to **API Keys** tab in your dashboard
+4. Copy your API key (it activates within ~10 minutes of signup)
+
+### Step 2 — Clone the Repository
 
 ```bash
-mysql -u root -p < database/database_setup.sql
+git clone https://github.com/YOUR_USERNAME/postharvest-saver.git
+cd postharvest-saver
 ```
 
----
-
-## How to run the project
+### Step 3 — Create a Virtual Environment
 
 ```bash
-git clone https://github.com/nshimyumurwa/momo-data-analysis.git
-cd momo-data-analysis
+python3 -m venv venv
+source venv/bin/activate        # Linux/macOS
+# OR
+venv\Scripts\activate           # Windows
+```
+
+### Step 4 — Install Dependencies
+
+```bash
 pip install -r requirements.txt
-mysql -u root -p < database/database_setup.sql # To Initialize the Database
-bash scripts/run_etl.sh
-bash scripts/serve_frontend.sh
 ```
 
-Then open http://localhost:8000 in your browser.
+### Step 5 — Configure Environment Variables
+
+```bash
+cp .env.example .env
+```
+
+Open `.env` and replace `your_api_key_here` with your actual OpenWeatherMap API key:
+
+```
+OPENWEATHER_API_KEY=abc123youractualkey
+```
+
+### Step 6 — Run the Application
+
+```bash
+python app.py
+```
+
+Open your browser and go to: **http://localhost:5000**
 
 ---
 
-## Scrum board
+## ☁️ Part Two: Deployment on Web Servers
 
-https://github.com/users/nshimyumurwa/projects/1/views/1
+### Architecture Overview
+
+```
+Internet
+    │
+    ▼
+[Lb01 — Nginx Load Balancer]
+    │               │
+    ▼               ▼
+[Web01 — Gunicorn]  [Web02 — Gunicorn]
+   Flask App          Flask App
+```
+
+### Step 1 — Set Up Both Web Servers (Web01 & Web02)
+
+Run these commands on **both Web01 and Web02**:
+
+#### 1a. Connect to the server
+```bash
+ssh ubuntu@<WEB01_IP>   # repeat for WEB02
+```
+
+#### 1b. Update and install Python
+```bash
+sudo apt update && sudo apt upgrade -y
+sudo apt install python3 python3-pip python3-venv git -y
+```
+
+#### 1c. Clone the repository
+```bash
+cd /var/www
+sudo git clone https://github.com/YOUR_USERNAME/postharvest-saver.git
+cd postharvest-saver
+```
+
+#### 1d. Create virtual environment and install dependencies
+```bash
+sudo python3 -m venv venv
+sudo venv/bin/pip install -r requirements.txt
+```
+
+#### 1e. Set the API key
+```bash
+sudo nano .env
+# Add: OPENWEATHER_API_KEY=your_actual_key_here
+```
+
+#### 1f. Test that the app runs
+```bash
+sudo venv/bin/python app.py
+# Should say: Running on http://0.0.0.0:5000
+# Press Ctrl+C to stop
+```
+
+#### 1g. Create a systemd service for auto-start
+```bash
+sudo nano /etc/systemd/system/postharvest.service
+```
+
+Paste the following:
+```ini
+[Unit]
+Description=PostHarvestSaver Flask App
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/var/www/postharvest-saver
+Environment="PATH=/var/www/postharvest-saver/venv/bin"
+ExecStart=/var/www/postharvest-saver/venv/bin/gunicorn --workers 3 --bind 0.0.0.0:5000 app:app
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+#### 1h. Start and enable the service
+```bash
+sudo systemctl daemon-reload
+sudo systemctl start postharvest
+sudo systemctl enable postharvest
+sudo systemctl status postharvest   # Should show: active (running)
+```
+
+#### 1i. Verify the app is running
+```bash
+curl http://localhost:5000/health
+# Expected: {"app":"PostHarvestSaver","status":"ok","version":"1.0.0"}
+```
 
 ---
 
-## AI usage
+### Step 2 — Configure the Load Balancer (Lb01)
 
-We used Claude to check the grammar in our documentation and to verify some SQL syntax.
+#### 2a. Connect to Lb01
+```bash
+ssh ubuntu@<LB01_IP>
+```
+
+#### 2b. Install Nginx
+```bash
+sudo apt update
+sudo apt install nginx -y
+```
+
+#### 2c. Configure Nginx as a load balancer
+```bash
+sudo nano /etc/nginx/sites-available/postharvest
+```
+
+Paste the following (replace IPs with your actual Web01 and Web02 IPs):
+```nginx
+upstream postharvest_servers {
+    server <WEB01_IP>:5000 weight=1;
+    server <WEB02_IP>:5000 weight=1;
+}
+
+server {
+    listen 80;
+    server_name _;
+
+    location / {
+        proxy_pass http://postharvest_servers;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_connect_timeout 30s;
+        proxy_read_timeout 60s;
+    }
+
+    location /health {
+        proxy_pass http://postharvest_servers;
+        access_log off;
+    }
+}
+```
+
+#### 2d. Enable the configuration and restart Nginx
+```bash
+sudo ln -s /etc/nginx/sites-available/postharvest /etc/nginx/sites-enabled/
+sudo nginx -t                  # Test config — should say "syntax is ok"
+sudo systemctl restart nginx
+sudo systemctl enable nginx
+```
+
+#### 2e. Verify load balancing works
+```bash
+# Hit the load balancer multiple times and watch it rotate servers
+for i in {1..6}; do curl -s http://<LB01_IP>/health; echo; done
+```
+
+You should see successful responses — Nginx is distributing traffic between Web01 and Web02.
+
+---
+
+## 🔒 Security Practices
+
+- API keys are stored in `.env` files — **never committed to GitHub**
+- `.gitignore` excludes `.env` and `__pycache__`
+- All user inputs are validated server-side before API calls
+- Error messages never expose internal system details
+- Gunicorn is used in production (not Flask dev server)
+
+---
+
+## 🌐 APIs Used
+
+### OpenWeatherMap Current Weather API
+- **Documentation**: https://openweathermap.org/current
+- **Endpoint**: `https://api.openweathermap.org/data/2.5/weather`
+- **Plan**: Free tier (1,000 calls/day)
+- **Data used**: Temperature (°C), Humidity (%), Rainfall (mm/1h), Wind speed (m/s)
+
+---
+
+## 📖 Challenges & Solutions
+
+| Challenge | Solution |
+|-----------|----------|
+| Rwanda district names don't map directly to cities in OpenWeatherMap | Used precise lat/lon coordinates for every district instead of city names |
+| Different crops have completely different optimal conditions | Built a comprehensive crop-threshold dictionary with crop-specific risk logic |
+| API key exposure in frontend | All API calls are made server-side in Flask; the key never touches the browser |
+| Load balancer session continuity | Used stateless design (no server-side sessions); history is stored in `localStorage` |
+| OpenWeatherMap rate limits during testing | Implemented timeout and 429 error handling with user-friendly messages |
+
+---
+
+## 📁 Project Structure
+
+```
+postharvest-saver/
+├── app.py               # Flask backend — routes, API calls, risk logic
+├── requirements.txt     # Python dependencies
+├── .env.example         # Environment variable template
+├── .gitignore           # Excludes .env and build files
+├── README.md            # This file
+├── templates/
+│   └── index.html       # Single-page HTML frontend
+└── static/
+    ├── css/
+    │   └── style.css    # Full stylesheet with responsive design
+    └── js/
+        └── main.js      # Frontend logic — interactions, history, filtering
+```
+
+---
+
+## 🙏 Credits & Attribution
+
+- **OpenWeatherMap** — Weather data API · https://openweathermap.org
+- **Flask** — Python web framework · https://flask.palletsprojects.com
+- **Gunicorn** — Python WSGI HTTP server · https://gunicorn.org
+- **Nginx** — Load balancer / reverse proxy · https://nginx.org
+- **FAO** — Post-Harvest Management Guidelines · https://www.fao.org/postharvest
+- **RAB (Rwanda Agriculture Board)** — Crop storage best practices
+- **Google Fonts** — Playfair Display + DM Sans typefaces
+
+---
+
+## 👤 Author
+
+**[Your Full Name]**  
+ALX Software Engineering Programme  
+*PostHarvestSaver — Built to reduce food loss in Rwanda* 🌿
