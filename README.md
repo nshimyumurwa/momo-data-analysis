@@ -5,8 +5,10 @@
 | Name | Role |
 |------|------|
 | Nshimyumurwa Mary Therese | Team Lead / API Development |
-| Aimable BANCUNGUYE | DSA & Data Parsing |
-| Mizero Eloi | Documentation & Testing |
+| Aimable Bancunguye | DSA & Data Parsing |
+| Davy Dushimiyimana | Backend Support & Testing |
+| Eloi Mizero | Documentation & API Docs |
+| Clive Tanaka Mushipe | Data Parsing & XML Processing |
 
 ---
 
