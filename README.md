@@ -1,6 +1,6 @@
 # MoMo SMS REST API
 
-**Team 8** | ALU – Building and Securing a REST API Assignment
+**Team 2** | ALU – Building and Securing a REST API Assignment
 
 | Name | Role |
 |------|------|
@@ -8,7 +8,7 @@
 | Aimable Bancunguye | DSA & Data Parsing |
 | Davy Dushimiyimana | Backend Support & Testing |
 | Eloi Mizero | Documentation & API Docs |
-| Clive Tanaka Mushipe | Data Parsing & XML Processing |
+| Clive Mushipe | Data Parsing & XML Processing |
 
 ---
 
