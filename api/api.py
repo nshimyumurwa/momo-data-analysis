@@ -1,3 +1,18 @@
+"""
+MoMo SMS REST API
+=================
+A secure REST API built with Python's http.server module.
+Provides full CRUD operations on MoMo SMS transaction data.
+Secured with HTTP Basic Authentication.
+
+Usage:
+    python api/api.py
+
+Credentials:
+    username: admin
+    password: momo2024
+"""
+
 import json
 import base64
 import xml.etree.ElementTree as ET
@@ -233,3 +248,16 @@ if __name__ == "__main__":
         server.serve_forever()
     except KeyboardInterrupt:
         print("\n[INFO] Server stopped.")
+
+"""
+This MoMo SMS REST API provides a simple HTTP-based service for managing mobile money transaction data stored in an XML file.
+It loads transactions into memory and exposes them through a RESTful interface with full CRUD functionality 
+(Create, Read, Update, Delete).
+The API uses Python's built-in http.server module and secures all endpoints using Basic Authentication.
+Data is stored in both a list (for sequential operations) and a dictionary 
+(for fast lookup by transaction ID).
+This implementation is intended for learning purposes,
+demonstrating concepts such as REST APIs, 
+XML parsing, in-memory data structures, 
+and basic authentication without relying on external frameworks.
+"""
