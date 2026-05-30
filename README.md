@@ -30,8 +30,7 @@ momo-data-analysis/
 │   ├── modified_sms_v2.xml     # MoMo SMS dataset
 │   └── generate_sample_xml.py  # Script to regenerate sample data
 ├── docs/
-│   └── api_docs.md             # Full API documentation
-├── screenshots/                # Test evidence (curl screenshots)
+│   └── erd_design_explanation.md
 └── README.md
 ```
 
@@ -66,43 +65,6 @@ The server starts at `http://localhost:8080`.
 
 ---
 
-## Credentials
-
-| Field    | Value     |
-|----------|-----------|
-| Username | `admin`   |
-| Password | `momo2024`|
-
----
-
-## Quick API Test
-
-```bash
-# List all transactions
-curl -u admin:momo2024 http://localhost:8080/transactions
-
-# Get one transaction
-curl -u admin:momo2024 http://localhost:8080/transactions/1
-
-# Create a transaction
-curl -u admin:momo2024 -X POST http://localhost:8080/transactions \
-  -H "Content-Type: application/json" \
-  -d '{"transaction_type":"transfer","amount":5000,"sender":"0789876543","receiver":"0781111111","date":"2024-02-01 10:00:00"}'
-
-# Update a transaction
-curl -u admin:momo2024 -X PUT http://localhost:8080/transactions/1 \
-  -H "Content-Type: application/json" \
-  -d '{"status":"reviewed","amount":5500}'
-
-# Delete a transaction
-curl -u admin:momo2024 -X DELETE http://localhost:8080/transactions/1
-
-# Test unauthorized access (should return 401)
-curl http://localhost:8080/transactions
-```
-
----
-
 ## DSA Benchmark
 
 ```bash
@@ -110,12 +72,6 @@ python dsa/dsa_comparison.py
 ```
 
 Compares linear search O(n) vs dictionary lookup O(1) across 25 records with 100,000 repetitions per test case.
-
----
-
-## API Documentation
-
-See [`docs/api_docs.md`](docs/api_docs.md) for full endpoint reference including request/response examples and security discussion.
 
 ---
 
