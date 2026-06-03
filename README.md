@@ -123,4 +123,3 @@ See [`docs/api_docs.md`](docs/api_docs.md) for full endpoint reference including
 
 [View the project Scrum Board here](https://github.com/users/nshimyumurwa/projects/1/views/1)
 
-> **Note to grader:** The Scrum board link is a public GitHub Project. If access is restricted, please visit the repository's **Projects** tab directly.
